@@ -5,6 +5,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"time"
 )
 
 func hostinfo(w http.ResponseWriter, r *http.Request) {
@@ -12,6 +13,7 @@ func hostinfo(w http.ResponseWriter, r *http.Request) {
 	message := "捷越ECS测试"
 	// Retrive the hostname.
 	hostname, _ := os.Hostname()
+
 	// Retrive the net info.
 	interfaces, _ := net.Interfaces()
 	for _, i := range interfaces {
@@ -22,7 +24,14 @@ func hostinfo(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	message = message + "\n" + hostname + "\n" + addr
+	// Retrive the current time.
+	timeFormat := time.Now()
+	currentTime := timeFormat.String()
+
+	// Version info
+	version := "The current version is: 0.1.0"
+
+	message = message + "\n" + hostname + "\n" + addr + "\n" + currentTime + "\n" + version
 	w.Write([]byte(message))
 }
 func main() {
